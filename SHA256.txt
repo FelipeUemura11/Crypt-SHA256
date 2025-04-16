@@ -1,8 +1,0 @@
-Transforma em a senha em binario sendo o ultimo bit = [1] + 'padding' vetor de 64 posicoes que eh um preenchimento em 0's para garantir que seu tamanho seja um múltiplo de 512 bits. Soh que ele adiciona 448 bits de 0 primeiro, o restante (64 bits) armazena a soma de cada caracter da palavra original em bits. SHA-256 utiliza oito registradores de 32 bits, inicializados com constantes derivadas das frações decimais das raízes quadradas dos primeiros oito números primos.
-
-Calculate:
-
-w16 = w0 + σ0 + w9 + σ1
-
-σ0  =	(w1 rightrotate 7) xor (w1 rightrotate 18) xor (w1 rightshift 3)
-σ1  = 	(w14 rightrotate 17) xor (w14 rightrotate 19) xor (w14 rightshift 10)
