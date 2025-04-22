@@ -164,6 +164,47 @@ int comparar_hashes(const uint8_t* hash1, const uint8_t* hash2) {
     return memcmp(hash1, hash2, 32) == 0;
 }
 
+// Função para comparar dois arquivos usando SHA-256
+void comparar_arquivos(const char* tipo_arquivo, const char* diretorio) {
+    char nome_original[256];
+    char nome_copia[256];
+    char caminho_original[512];
+    char caminho_copia[512];
+    uint8_t hash_original[32];
+    uint8_t hash_copia[32];
+
+    printf("Digite o nome do arquivo %s original(ex: texto1.txt): ", tipo_arquivo);
+    scanf(" %[^\n]", nome_original);
+    printf("Digite o nome do arquivo %s copiado(ex: texto2.txt): ", tipo_arquivo);
+    scanf(" %[^\n]", nome_copia);
+
+    // Construir os caminhos completos
+    snprintf(caminho_original, sizeof(caminho_original), "%s/%s", diretorio, nome_original);
+    snprintf(caminho_copia, sizeof(caminho_copia), "%s/%s", diretorio, nome_copia);
+
+    // Calcular hashes
+    calcular_hash_arquivo(caminho_original, hash_original);
+    calcular_hash_arquivo(caminho_copia, hash_copia);
+
+    printf("\nHash do %s original: ", tipo_arquivo);
+    for (int i = 0; i < 32; ++i) {
+        printf("%02x", hash_original[i]);
+    }
+    printf("\n");
+
+    printf("Hash do %s copiado: ", tipo_arquivo);
+    for (int i = 0; i < 32; ++i) {
+        printf("%02x", hash_copia[i]);
+    }
+    printf("\n");
+
+    if (comparar_hashes(hash_original, hash_copia)) {
+        printf("Os arquivos %s sao identicos!\n", tipo_arquivo);
+    } else {
+        printf("ALERTA: Os arquivos %s sao diferentes! Houve alteracao no arquivo.\n", tipo_arquivo);
+    }
+}
+
 // Função principal para testar o SHA-256
 int main() {
 
@@ -172,18 +213,12 @@ int main() {
     SHA256_HashState hash_state;
     uint8_t hash[32];
     
-    char foto_ofc[256];
-    char foto_copy[256];
-    char caminho_original[512];
-    char caminho_falso[512];
-    uint8_t hash_original[32];
-    uint8_t hash_falso[32];
-    
     while(opc != 0){
         printf(" >> Escolha uma opcao <<\n");
         printf("  > [1] Sha256 <\n");
-        printf("  > [2] Imagem < \n");
-        printf("  > [3] Audio  <\n");
+        printf("  > [2] Arquivo < \n");
+        printf("  > [3] Imagem < \n");
+        printf("  > [4] Audio  < \n");
         printf("  > [0] Sair   < \n");
         printf(" >> Escolha uma opcao: ");
         scanf("%i", &opc);
@@ -206,44 +241,17 @@ int main() {
 
                 printf("\n");
                 break;
-            case 2: {
-
-                printf("Digite o nome do arquivo .png original: ");
-                scanf(" %[^\n]", foto_ofc);
-                printf("Digite o nome do arquivo .png copiado: ");
-                scanf(" %[^\n]", foto_copy);
-
-                // Construir os caminhos completos do folder fotos
-                snprintf(caminho_original, sizeof(caminho_original), "fotos/%s", foto_ofc);
-                snprintf(caminho_falso, sizeof(caminho_falso), "fotos/%s", foto_copy);
-
-                // Calcular hashes
-                calcular_hash_arquivo(caminho_original, hash_original);
-                calcular_hash_arquivo(caminho_falso, hash_falso);
-
-                printf("\nHash da imagem original: ");
-                for (int i = 0; i < 32; ++i) {
-                    printf("%02x", hash_original[i]);
-                }
-                printf("\n");
-
-                printf("Hash da imagem copiada: ");
-                for (int i = 0; i < 32; ++i) {
-                    printf("%02x", hash_falso[i]);
-                }
-                printf("\n");
-
-                if (comparar_hashes(hash_original, hash_falso)) {
-                    printf("As imagens sao identicas!\n");
-                } else {
-                    printf("ALERTA: As imagens sao diferentes! Houve alteracao na imagem.\n");
-                }
+            case 2:
+                comparar_arquivos("arquivo", "arquivos");
                 break;
-            }
             case 3:
+                comparar_arquivos("imagem", "fotos");
+                break;
+            case 4:
+                comparar_arquivos("audio", "audios");
                 break;
             case 0:
-            break;
+                break;
         }
     }
     
