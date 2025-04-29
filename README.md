@@ -4,6 +4,8 @@
 
 ## ✅ O que é SHA-256?
 
+Principal objetivo do SHA-256: criptografa via hash, é irreversível, usado para verificação de integridade, assinaturas digitais, comparar se arquivos são iguais, etc.
+
 SHA-256 (Secure Hash Algorithm 256 bits) é um algoritmo de **hash criptográfico** que transforma qualquer informação (como uma senha ou texto) em uma sequência **única de 64 caracteres** (256 bits) no formato hexadecimal.
 
 ---
